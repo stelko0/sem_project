@@ -4,84 +4,125 @@
 using namespace std;
 
 struct Phone {
-	double price, inch = 0;
+	double price, screenSize = 0;
 	string brand, model, color = "";
-	int rom = 0;
+	int storage = 0;
 	bool dualSim = false;
 	int countFromThisPhone = 0;
 };
 
+
+struct PhonesList {
+	Phone phones[100];
+	int size = 0;
+
+	Phone get(int index) {
+		return phones[index];
+	}
+
+	Phone add(Phone phone) {
+		phones[size] = phone;
+		size++;
+		return phone;
+	}
+
+	Phone remove() {
+		size--;
+		Phone phone = phones[size];
+		return phone;
+	}
+};
+
+
+
+void phoneFromInput(PhonesList& list);
+void phonesFromInput(PhonesList& list);
+
 // Functions
-void menu(Phone phones[100], int &n);
-void addPhone(Phone phones[100], int& n);
-void showPhones(Phone phones[100], int& n);
-void searchAndPrint(Phone phones[100], int& n);
+void menu(Phone phones[100], PhonesList list);
+void addPhoneMenu(Phone phones[100], PhonesList list);
+void showPhones(PhonesList list);
+void searchAndPrint(PhonesList list);
+void backToMenu(Phone phones[100], PhonesList list);
+void sortingMenu(PhonesList list);
+
 
 
 
 // Main Function
 int main() {
-	int n = 0;
 	Phone phones[100] = {};
-	menu(phones, n);
+	PhonesList list = {};
+	menu(phones, list);
 }
 
-// Menu Funcion
-void menu(Phone phones[100], int &n) {
-	// telefonite sa samo za proba
-	/*phones[0].brand = "Huawei";
-	phones[0].model = "P30";
-	phones[0].color = "Black";
-	phones[0].price = 300;
-	phones[0].rom = 8;
-	phones[0].inch = 5.5;
-	phones[0].dualSim = true;
-	phones[0].countFromThisPhone = 1000;
+// Главно менюл
+void menu(Phone phones[100], PhonesList list) {
+	system("cls");
+	Phone phone[100];
+	phone[0].brand = "Huawei";
+	phone[0].model = "P30 Lite";
+	phone[0].color = "Black";
+	phone[0].price = 300;
+	phone[0].storage = 8;
+	phone[0].screenSize = 5.5;
+	phone[0].dualSim = true;
+	phone[0].countFromThisPhone = 1000;
+	list.add(phone[0]);
+
+	phone[1].brand = "Nokia";
+	phone[1].model = "5800";
+	phone[1].color = "Red";
+	phone[1].price = 100;
+	phone[1].storage = 8;
+	phone[1].screenSize = 5.5;
+	phone[1].dualSim = false;
+	phone[1].countFromThisPhone = 1000;
+	list.add(phone[1]);
+
+	phone[2].brand = "Iphone";
+	phone[2].model = "13 Pro Max";
+	phone[2].color = "Black";
+	phone[2].price = 1300;
+	phone[2].storage = 8;
+	phone[2].screenSize = 5.5;
+	phone[2].dualSim = true;
+	phone[2].countFromThisPhone = 1000;
+	list.add(phone[2]);
+
+	phone[4].brand = "Iphone";
+	phone[4].model = "12";
+	phone[4].color = "Black";
+	phone[4].price = 1300;
+	phone[4].storage = 4;
+	phone[4].screenSize = 5.5;
+	phone[4].dualSim = true;
+	phone[4].countFromThisPhone = 1000;
+	list.add(phone[4]);
+
+	phone[3].brand = "Motorola";
+	phone[3].model = "Neshto si";
+	phone[3].color = "Black";
+	phone[3].price = 1300;
+	phone[3].storage = 2;
+	phone[3].screenSize = 5.5;
+	phone[3].dualSim = true;
+	phone[3].countFromThisPhone = 1000;
+	list.add(phone[3]);
 
 
-	phones[1].brand = "Iphone";
-	phones[1].model = "11";
-	phones[1].color = "Gold";
-	phones[1].price = 1300;
-	phones[1].rom = 16;
-	phones[1].inch = 6.5;
-	phones[1].dualSim = true;
-	phones[1].countFromThisPhone = 100;
-
-
-	phones[2].brand = "Samsung";
-	phones[2].model = "Galaxy";
-	phones[2].color = "White";
-	phones[2].price = 150;
-	phones[2].rom = 4;
-	phones[2].inch = 5;
-	phones[2].dualSim = false;
-	phones[2].countFromThisPhone = 2;
-
-	phones[3].brand = "Lenovo";
-	phones[3].model = "K6";
-	phones[3].color = "White";
-	phones[3].price = 150;
-	phones[3].rom = 4;
-	phones[3].inch = 5;
-	phones[3].dualSim = false;
-	phones[3].countFromThisPhone = 2;
-	n = 4
-	*/
 
 	cout << "" << setw(42) << setfill('-') << "\n" << "|        Добре дошли в програмата       |\n|    за продажба на мобилни телефони    |\n" << setw(41) << setfill('-') << "" << endl << endl;
-	int menuNumber = -1;
+	int menuNumber = 0;
 	char chooice = 'x';
-	// n e samo za proba
 
 
 	do {
-		cout << "1) Добавяне на нови мобилни телефони" << endl;
-		cout << "2) Извеждане на екрана" << endl;
-		cout << "3) Търсене и извеждане на екрана" << endl;
+		cout << "1) Добавяне на нови мобилни телефони" << endl; // 
+		cout << "2) Извеждане на екрана" << endl; // 
+		cout << "3) Търсене и извеждане на екрана" << endl; //
 		cout << "4) Подреждане на основния масив с мобилни телефони, без да се извежда на екрана" << endl;
 		cout << "5) Управление на файл" << endl;
-
 		// Допълнително първо (+ базова задача)
 		cout << "6) Одит на мобилни телефони в наличност в под меню" << endl;
 		cout << "7) Корекция на данни за даден телефон" << endl;
@@ -92,17 +133,23 @@ void menu(Phone phones[100], int &n) {
 		cout << "Моля изберете опция от менюто: ";
 		cin >> menuNumber;
 		cout << endl;
+
 		switch (menuNumber) {
 		case 1:
-			addPhone(phones, n);
+			system("cls");
+			addPhoneMenu(phones, list);
 			break;
 		case 2:
-			showPhones(phones, n);
+			system("cls");
+			showPhones(list);
 			break;
 		case 3:
-			searchAndPrint(phones, n);
+			system("cls");
+			searchAndPrint(list);
 			break;
 		case 4:
+			system("cls");
+			sortingMenu(list);
 			break;
 		case 5:
 			break;
@@ -122,17 +169,15 @@ void menu(Phone phones[100], int &n) {
 			cout << "Моля въведете число [1 - 10]" << endl;
 			break;
 		}
-	} while (chooice == 'x');
+	} while (chooice != 'y');
 }
 
-void addPhone(Phone phones[100], int &n) {
-	cout << "N: " << n << endl;
-	int menuNumber = -1;
-	char chooice = 'x';
-	string dualSim = "";
 
-	int totalPhones = 0;
-	int nPhones = 0;
+// Меню за добавяне на телефони
+void addPhoneMenu(Phone phones[100], PhonesList list) {
+	int menuNumber = 0;
+	char chooice = 'x';
+
 
 	cout << "1) Добавяне на един нов мобилен телефон" << endl;
 	cout << "2) Добавяне на списък от мобилни телефони.Въвежда се цяло число n и след него n на брой нови мобилни телефони" << endl;
@@ -144,136 +189,110 @@ void addPhone(Phone phones[100], int &n) {
 		switch (menuNumber)
 		{
 		case 1:
-			chooice = 'y';
-			cout << "* Вие влезнахте в -> [Добавяне на един нов мобилен телефон]" << endl;
-			cout << "Въведете марка на телефона: ";
-			cin >> phones[n].brand;
-			cout << "Въведете модел на телефона: ";
-			cin >> phones[n].model;
-			cout << "Въведете цвят на телефона: ";
-			cin >> phones[n].color;
-			cout << "Въведете цена на телефона : ";
-			cin >> phones[n].price;
-			cout << "Въведете вградената памет в (GB): ";
-			cin >> phones[n].rom;
-			cout << "Въведете в размер на екрана в (inch): ";
-			cin >> phones[n].inch;
-			cout << "Въведете може ли да работи с две SIM карти (yes/no): ";
-			cin >> dualSim;
-			cout << "Въведете бройка от този телефон: ";
-			cin >> phones[n].countFromThisPhone;
-
-			if (dualSim == "yes") {
-				phones[n].dualSim = true;
-			}
-			else if (dualSim == "no") {
-				phones[n].dualSim = false;
-			}
-			else {
-				cout << "Моля въведете [yes/no]";
-				cin >> dualSim;
-			}
-			n++;
+			phoneFromInput(list);
+			menu(phones, list);
 			break;
 		case 2:
-			cout << "Вие влезнахте в -> [Добавяне на списък от мобилни телефони.Въвежда се цяло число n и след него n на брой нови мобилни телефони]" << endl;
-			cout << "Въведете колко телефона желаете да добавите: ";
-			cin >> nPhones;
-			cout << n;
-			totalPhones = n + nPhones;
-			           
-			for (int i = n; i < totalPhones; i++) {
-				cout << "Въведете марка на телефона: ";
-				cin >> phones[n].brand;
-				cout << "Въведете модел на телефона: ";
-				cin >> phones[n].model;
-				cout << "Въведете цвят на телефона: ";
-				cin >> phones[n].color;
-				cout << "Въведете цена на телефона : ";
-				cin >> phones[n].price;
-				cout << "Въведете вградената памет в (GB): ";
-				cin >> phones[n].rom;
-				cout << "Въведете в размер на екрана в (inch): ";
-				cin >> phones[n].inch;
-				cout << "Въведете може ли да работи с две SIM карти (yes/no): ";
-				cin >> dualSim;
-				cout << "Въведете бройка от този телефон: ";
-				cin >> phones[n].countFromThisPhone;
-
-				if (dualSim == "yes") {
-					phones[n].dualSim = true;
-				}
-				else if (dualSim == "no") {
-					phones[n].dualSim = false;
-				}
-				else {
-					cout << "Моля въведете [yes/no]";
-					cin >> dualSim;
-				}
-				n++;
-				cout << n;
-			}
-			menu(phones, n);
+			phonesFromInput(list);
+			menu(phones, list);
 			break;
 		case 3:
 			cout << "Вие напуснахте фунцкията!" << endl;
 			chooice = 'y';
-			menu(phones, n);
+			menu(phones, list);
 			break;
 		default:
 			cout << "Моля въведете число [1 - 2]" << endl;
 			return;
 		}
-	} while (chooice == 'x');
+	} while (chooice != 'y');
 }
 
-void showPhones(Phone phones[100], int& n) {
-	cout << n << endl;
-	cout << setfill(' ') << setw(4) << left << "No" << setw(20) << "| МАРКА |"
-		<< setw(18) << "| МОДЕЛ |"
-		<< setw(18) << "| ЦВЯТ |"
-		<< setw(18) << "| ЦЕНА |"
-		<< setw(18) << "| ПАМЕТ |"
-		<< setw(20) << "| ДИСПЕЛЙ |"
-		<< setw(14) << "| DUAL SIM |"
-		<< setw(15) << "| БРОЙ |"
-		<< endl;
-	for (int i = 0; i < n; i++) {
-		cout << setfill(' ') << left << setw(4) << i + 1 << "| "
-			<< setw(13) << phones[i].brand << "| "
-			<< setw(11) << phones[i].model << left << "| "
-			<< setw(12) << left << phones[i].color << "| "
-			<< setw(12) << phones[i].price << "| "
-			<< setw(3) << left << phones[i].rom << left << " GB" << setw(5) << "" << "| "
-			<< setw(11) << phones[i].inch << "| "
-			<< setw(14) << (phones[i].dualSim ? "Да" : "Не") << "| "
-			<< setw(12) << phones[i].countFromThisPhone
-			<< endl;
+
+// Показване на наличните телефони в "базата данни" - Мисля 100% готова
+void showPhones(PhonesList list) {
+	if (list.size == 0) {
+		cout << "Базата данни е празна!" << endl << endl;
 	}
-	cout << endl;
+	else {
+		cout << setfill(' ') << setw(4) << left << "No" << setw(20) << "| МАРКА |"
+			<< setw(18) << "| МОДЕЛ |"
+			<< setw(18) << "| ЦВЯТ |"
+			<< setw(18) << "| ЦЕНА |"
+			<< setw(18) << "| ПАМЕТ |"
+			<< setw(20) << "| ДИСПЕЛЙ |"
+			<< setw(14) << "| DUAL SIM |"
+			<< setw(15) << "| БРОЙ |"
+			<< endl;
+		for (int i = 0; i < list.size; i++) {
+			cout << setfill(' ') << left << setw(4) << i + 1 << "| "
+				<< setw(13) << list.phones[i].brand << "| "
+				<< setw(11) << list.phones[i].model << left << "| "
+				<< setw(12) << left << list.phones[i].color << "| "
+				<< setw(12) << list.phones[i].price << "| "
+				<< setw(3) << left << list.phones[i].storage << left << " GB" << setw(5) << "" << "| "
+				<< setw(11) << list.phones[i].screenSize << "| "
+				<< setw(14) << (list.phones[i].dualSim ? "Да" : "Не") << "| "
+				<< setw(12) << list.phones[i].countFromThisPhone
+				<< endl;
+		}
+		cout << endl;
+	}
 }
 
-// Мислене на алгоритъм за най-малко памет
-void searchAndPrint(Phone phones[100], int& n) {
-	int menuNumber = -1;
+
+// Показва телефоните с най-малко памет и телефоните, които поддържат DualSIM - мисля 100% готова
+void searchAndPrint(PhonesList list) {
+	int indexOfMinStoragePhone = 0;
+	int menuNumber = 0;
 	char chooice = 'x';
-	cout << "1) Извеждане на мобилни телефони с най - малка памет" << endl;	cout << "2) Извеждане на мобилни телефони, работещи с две сим карти" << endl;	cout << "3) Назад" << endl;
-	int smallerROM = 0;
+	int n = 0;
+
+	cout << "1) Извеждане на мобилни телефони с най - малка памет" << endl;	
+	cout << "2) Извеждане на мобилни телефони, работещи с две сим карти" << endl;	
+	cout << "3) Назад" << endl;
 	cout << "Моля изберете функция: ";
 	do {
 		cin >> menuNumber;
 		switch (menuNumber)
 		{
 		case 1:
-			chooice = 'y';
-			for (int i = 0; i < n; i++) {
-				if (phones[smallerROM].rom > phones[i].rom) {
-					smallerROM = i;
-				}
-				cout << phones[smallerROM].brand;
-			}
-			break;
+			
 
+			cout << "Телефоните, с най-малко памет: " << endl;
+			cout << setfill(' ') << setw(4) << left << "No" << setw(20) << "| МАРКА |"
+				<< setw(18) << "| МОДЕЛ |"
+				<< setw(18) << "| ЦВЯТ |"
+				<< setw(18) << "| ЦЕНА |"
+				<< setw(18) << "| ПАМЕТ |"
+				<< setw(20) << "| ДИСПЕЛЙ |"
+				<< setw(14) << "| DUAL SIM |"
+				<< setw(15) << "| БРОЙ |"
+				<< endl;
+			
+			for (int i = 0; i < list.size; i++) {
+				if (list.phones[i].storage < list.phones[indexOfMinStoragePhone].storage) {
+					indexOfMinStoragePhone = i;
+				}
+			}
+
+				for (int i = 0; i <= list.size; i++) {
+					if (list.phones[indexOfMinStoragePhone].storage == list.phones[i].storage) {
+						cout << setfill(' ') << left << setw(4) << /*?*/ n + 1 << "| "
+							<< setw(13) << list.phones[i].brand << "| "
+							<< setw(11) << list.phones[i].model << left << "| "
+							<< setw(12) << left << list.phones[i].color << "| "
+							<< setw(12) << list.phones[i].price << "| "
+							<< setw(3) << left << list.phones[i].storage << left << " GB" << setw(5) << "" << "| "
+							<< setw(11) << list.phones[i].screenSize << "| "
+							<< setw(14) << (list.phones[i].dualSim ? "Да" : "Не") << "| "
+							<< setw(12) << list.phones[i].countFromThisPhone
+							<< endl;
+						n++;
+					}
+				}
+				cout << endl;
+			break;
 		case 2:
 			chooice = 'y';
 			cout << "Телефоните, които поддържат Dual SIM" << endl;
@@ -286,31 +305,154 @@ void searchAndPrint(Phone phones[100], int& n) {
 				<< setw(14) << "| DUAL SIM |"
 				<< setw(15) << "| БРОЙ |"
 				<< endl;
-			for (int i = 0; i < n; i++) {
-				if (phones[i].dualSim == true) {
-					cout << setfill(' ') << left << setw(4) << i + 1 << "| "
-						<< setw(13) << phones[i].brand << "| "
-						<< setw(11) << phones[i].model << left << "| "
-						<< setw(12) << left << phones[i].color << "| "
-						<< setw(12) << phones[i].price << "| "
-						<< setw(3) << left << phones[i].rom << left << " GB" << setw(5) << "" << "| "
-						<< setw(11) << phones[i].inch << "| "
-						<< setw(14) << (phones[i].dualSim ? "Да" : "Не") << "| "
-						<< setw(12) << phones[i].countFromThisPhone
+			for (int i = 0; i < list.size; i++) {
+				if (list.phones[i].dualSim == true) {
+					cout << setfill(' ') << left << setw(4) << /*?*/ n + 1 << "| "
+						<< setw(13) << list.phones[i].brand << "| "
+						<< setw(11) << list.phones[i].model << left << "| "
+						<< setw(12) << left << list.phones[i].color << "| "
+						<< setw(12) << list.phones[i].price << "| "
+						<< setw(3) << left << list.phones[i].storage << left << " GB" << setw(5) << "" << "| "
+						<< setw(11) << list.phones[i].screenSize << "| "
+						<< setw(14) << (list.phones[i].dualSim ? "Да" : "Не") << "| "
+						<< setw(12) << list.phones[i].countFromThisPhone
 						<< endl;
+					n++;
 				}
 			}
 			cout << endl;
 			break;
 		case 3:
 			cout << "Вие напуснахте функцията!" << endl;
-			menu(phones, n);
 			break;
 		default:
 			cout << "Грешка!" << endl;
 			return;
 		}
-	} while (chooice == 'x');
-
+	} while (chooice != 'y');
 }
 
+
+// Въвеждане на телефон !!!! ПРОВЕРКА ЗА ЦЕНА, ПАМЕТ, РАЗМЕР НА ЕКРАНА И БРОЙ ТЕЛЕФОНИ
+void phoneFromInput(PhonesList& list) {
+	string brand, model, color = "";
+	double price = 0.0;
+	double screenSize = 0.0;
+	int storage = 0;
+	bool dualSim = false;
+	int countFromThisPhone = 0;
+
+	Phone phone[100];
+	cout << "Въведете марка на телефона: ";
+	cin >> brand;
+	cout << "Въведете модел на телефона: ";
+	cin.ignore(10, '\n');
+	getline(cin, model);
+	cout << "Въведете цвят на телефона: ";
+	cin >> color;
+	cin >> price;
+	cout << "Въведете вградената памет в (GB): ";
+	cin >> storage;
+	cout << "Въведете в размер на екрана в (screenSize): ";
+	cin >> screenSize;
+
+	while (true) {
+		cout << "Въведете може ли да работи с две SIM карти (yes/no): ";
+		string dualSimStr;
+		cin >> dualSimStr;
+		if (dualSimStr == "yes") {
+			dualSim = true;
+			break;
+		}
+		else if (dualSimStr == "no") {
+			dualSim = false;
+			break;
+		}
+	}
+	cout << "Въведете бройка от този телефон: ";
+	cin >> countFromThisPhone;
+
+	phone[list.size].brand = brand;
+	phone[list.size].model = model;
+	phone[list.size].color = color;
+	phone[list.size].price = price;
+	phone[list.size].storage = storage;
+	phone[list.size].screenSize = screenSize;
+	phone[list.size].dualSim = dualSim;
+	phone[list.size].countFromThisPhone = countFromThisPhone;
+	list.add(phone[list.size]);
+}
+
+
+// Въвеждане на телефони
+void phonesFromInput(PhonesList& list) {
+	int n;
+	cout << "Въведете колко телефона, желаете да добавите: ";
+	cin >> n;
+	cout << endl;
+	string brand, model, color = "";
+	double price = 0.0;
+	double screenSize = 0.0;
+	int storage = 0;
+	bool dualSim = false;
+	int countFromThisPhone = 0;
+
+	for (int i = 0; i < n; i++) {
+		cout << "Въвеждане на данни за телефон № " << i + 1 << endl;
+		Phone phone[100];
+		cout << "Въведете марка на телефона: ";
+		cin >> brand;
+		cout << "Въведете модел на телефона: ";
+		cin >> model;
+		cout << "Въведете цвят на телефона: ";
+		cin >> color;
+		cout << "Въведете цена на телефона: ";
+		cin >> price;
+		cout << "Въведете вградената памет в (GB): ";
+		cin >> storage;
+		cout << "Въведете в размер на екрана в (screenSize): ";
+		cin >> screenSize;
+
+		while (true) {
+			cout << "Въведете може ли да работи с две SIM карти (yes/no): ";
+			string dualSimStr;
+			cin >> dualSimStr;
+			if (dualSimStr == "yes") {
+				dualSim = true;
+				break;
+			}
+			else if (dualSimStr == "no") {
+				dualSim = false;
+				break;
+			}
+		}
+		cout << "Въведете бройка от този телефон: ";
+		cin >> countFromThisPhone;
+
+		phone[list.size].brand = brand;
+		phone[list.size].model = model;
+		phone[list.size].color = color;
+		phone[list.size].price = price;
+		phone[list.size].storage = storage;
+		phone[list.size].screenSize = screenSize;
+		phone[list.size].dualSim = dualSim;
+		phone[list.size].countFromThisPhone = countFromThisPhone;
+		list.add(phone[list.size]);
+		cout << endl;
+	}
+}
+
+
+// Сортиране на телефони по низходящ ред на цената
+void sortingMenu(PhonesList list) {
+	Phone phone;
+		for (int i = 0; i < list.size; i++) {
+			for (int j = 0; j < list.size; j++) {
+				if (list.phones[j].price < list.phones[j + 1].price) {
+					phone = list.phones[j];
+					list.phones[j] = list.phones[j + 1];
+					list.phones[j + 1] = phone;
+				}
+			}
+		}
+	}
