@@ -1,0 +1,40 @@
+Huawei
+P30 Lite
+Black
+300
+8
+5
+1
+1000
+Huawei
+P40 Lite
+White
+120
+8
+6.5
+0
+1000
+Iphone
+13
+Black
+1300
+8
+7.5
+1
+1000
+Iphone
+12
+Black
+250
+4
+5.5
+1
+1000
+Motorola
+Neshto si
+Black
+100
+2
+6.5
+1
+1000
