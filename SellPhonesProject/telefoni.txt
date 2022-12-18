@@ -13,7 +13,7 @@ White
 8
 6.5
 0
-1000
+2
 Iphone
 13
 Black
@@ -21,7 +21,7 @@ Black
 8
 7.5
 1
-1000
+400
 Iphone
 12
 Black
@@ -29,12 +29,12 @@ Black
 4
 5.5
 1
-1000
-Motorola
-Neshto si
-Black
 100
-2
-6.5
-1
-1000
+Samsung
+Galaxy
+Blue
+400
+32
+5
+0
+10
