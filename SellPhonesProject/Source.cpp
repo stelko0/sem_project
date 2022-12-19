@@ -122,28 +122,6 @@ int main() {
 	menu(phones, list);
 }
 
-//bool isValidPropeprty(Property property)
-//{
-//	if (property.refNum.size() == 0)
-//	{
-//		return false;
-//	}
-//	else {
-//		return true;
-//	}
-//}
-//
-//int getValidPropertiesCount(Property properties[], int arrLength, int count)
-//{
-//	for (int i = 0; i < arrLength; i++)
-//	{
-//		if (isValidPropeprty(properties[i]))
-//		{
-//			count++;
-//		}
-//	}
-//	return count;
-//}
 
 int countOfValidPhones(PhonesList& list)
 {
@@ -157,6 +135,7 @@ int countOfValidPhones(PhonesList& list)
 
 	return list.size;
 }
+
 // Главно меню
 void menu(Phone phones[100], PhonesList& list)
 {
@@ -174,8 +153,7 @@ void menu(Phone phones[100], PhonesList& list)
 		cout << "6) Одит на мобилни телефони в наличност в под меню" << endl;
 		cout << "7) Корекция на данни за даден телефон" << endl;
 		cout << "8) Продажба на мобилни телефони" << endl;
-		cout << "9) Данните в програмата да могат да се запазят в файл (двоичен) между две стратирания на програмата" << endl;
-		cout << "10) Изход от програмата" << endl;
+		cout << "9) Изход от програмата" << endl;
 		cout << endl;
 		cout << "Моля изберете опция от менюто: ";
 		while (!(cin >> menuNumber)) {
@@ -220,14 +198,11 @@ void menu(Phone phones[100], PhonesList& list)
 			break;
 		case 9:
 			saveBinaryFile(list);
-			break;
-		case 10:
-			saveBinaryFile(list);
-			cout << "Вие напуснахте програмата!" << endl;
 			chooice = 'y';
+			cout << "Вие напуснахте програмата!" << endl;
 			break;
 		default:
-			cout << "Моля въведете число [1 - 10]" << endl;
+			cout << "Моля въведете число [1 - 9]" << endl;
 			break;
 		}
 	} while (chooice != 'y');
@@ -1080,6 +1055,3 @@ void loadBinaryFile(PhonesList& list) {
 	file.close();
 	cout << endl << "Файлът беше успешно зареден!" << endl;
 }
-
-
-
