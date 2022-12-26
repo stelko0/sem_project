@@ -3,10 +3,10 @@
 #include <iomanip>
 #include <fstream>
 #include <cstdio>
-#include <windows.h> // WinApi header 
 using namespace std;
 
 const string file = "telefoni.txt";
+const string binFile = "database.dat";
 
 struct Phone {
 	string brand, model, color = "";
@@ -30,7 +30,7 @@ struct PhonesList {
 };
 
 void phoneFromInput(PhonesList& list);
-void sortingMenu(PhonesList& list);
+void sorting(PhonesList& list);
 void phonesFromInput(PhonesList& list);
 
 // Functions
@@ -65,64 +65,12 @@ int main() {
 	loadBinaryFile(list);
 	count = countOfValidPhones(list);
 	cout << "" << setw(42) << setfill('-') << "\n" << "|        Добре дошли в програмата       |\n|    за продажба на мобилни телефони    |\n" <<
-		setw(41) << setfill('-') << "" << endl;
-
-
-	/*Phone phone[100];
-	phone[0].brand = "Huawei";
-	phone[0].model = "P30 Lite";
-	phone[0].color = "Black";
-	phone[0].price = 300;
-	phone[0].storage = 8;
-	phone[0].screenSize = 5;
-	phone[0].dualSim = true;
-	phone[0].countFromThisPhone = 1000;
-	list.add(phone[0]);
-
-	phone[1].brand = "Huawei";
-	phone[1].model = "P40 Lite";
-	phone[1].color = "White";
-	phone[1].price = 120;
-	phone[1].storage = 8;
-	phone[1].screenSize = 6.5;
-	phone[1].dualSim = false;
-	phone[1].countFromThisPhone = 2;
-	list.add(phone[1]);
-
-	phone[2].brand = "Iphone";
-	phone[2].model = "13";
-	phone[2].color = "Black";
-	phone[2].price = 1300;
-	phone[2].storage = 8;
-	phone[2].screenSize = 7.5;
-	phone[2].dualSim = true;
-	phone[2].countFromThisPhone = 400;
-	list.add(phone[2]);
-
-	phone[4].brand = "Iphone";
-	phone[4].model = "12";
-	phone[4].color = "Black";
-	phone[4].price = 250;
-	phone[4].storage = 4;
-	phone[4].screenSize = 5.5;
-	phone[4].dualSim = true;
-	phone[4].countFromThisPhone = 100;
-	list.add(phone[4]);
-
-	phone[3].brand = "Motorola";
-	phone[3].model = "Neshto si";
-	phone[3].color = "Black";
-	phone[3].price = 100;
-	phone[3].storage = 2;
-	phone[3].screenSize = 6.5;
-	phone[3].dualSim = true;
-	phone[3].countFromThisPhone = 20;*/
-
-
+	setw(41) << setfill('-') << "" << endl;
 	menu(phones, list);
 }
 
 
+// Проверява колко телефона са добавени от файл
 int countOfValidPhones(PhonesList& list)
 {
 	for (int i = 0; i < 100; i++)
@@ -136,11 +84,12 @@ int countOfValidPhones(PhonesList& list)
 	return list.size;
 }
 
+
 // Главно меню
 void menu(Phone phones[100], PhonesList& list)
 {
 	int menuNumber = 0;
-	char chooice = 'x';
+	char chooice = 'n';
 	do {
 		cout << endl;
 		cout << "1) Добавяне на нови мобилни телефони" << endl; // 
@@ -156,6 +105,7 @@ void menu(Phone phones[100], PhonesList& list)
 		cout << "9) Изход от програмата" << endl;
 		cout << endl;
 		cout << "Моля изберете опция от менюто: ";
+
 		while (!(cin >> menuNumber)) {
 			cout << "Моля изберете опция от менюто: ";
 			cin.clear();
@@ -178,7 +128,7 @@ void menu(Phone phones[100], PhonesList& list)
 			break;
 		case 4:
 			system("cls");
-			sortingMenu(list);
+			sorting(list);
 			break;
 		case 5:
 			system("cls");
@@ -197,9 +147,23 @@ void menu(Phone phones[100], PhonesList& list)
 			sellPhone(list);
 			break;
 		case 9:
-			saveBinaryFile(list);
-			chooice = 'y';
-			cout << "Вие напуснахте програмата!" << endl;
+			cout << "Сигурни ли сте, че искате да напусние програмата? (y/n) :";
+			cin >> chooice;
+			while (true) {
+				cout << "Сигурни ли сте, че искате да напусние програмата? (y/n) :";
+				cin >> chooice;
+				if (chooice != 'y' && chooice != 'n') {
+					continue;
+				}
+				if (chooice == 'y') {
+					saveBinaryFile(list);
+					cout << "Вие напуснахте програмата!" << endl;
+					return;
+				}
+				else if (chooice != 'n') {
+					break;
+				}
+			}
 			break;
 		default:
 			cout << "Моля въведете число [1 - 9]" << endl;
@@ -229,14 +193,17 @@ void addPhoneMenu(Phone phones[100], PhonesList& list) {
 		switch (menuNumber)
 		{
 		case 1:
+			system("cls");
 			phoneFromInput(list);
 			menu(phones, list);
 			break;
 		case 2:
+			system("cls");
 			phonesFromInput(list);
 			menu(phones, list);
 			break;
 		case 3:
+			system("cls");
 			cout << "Вие напуснахте фунцкията!" << endl;
 			chooice = 'y';
 			menu(phones, list);
@@ -372,33 +339,48 @@ void smallStorage(PhonesList list) {
 // Телефонните поддържащи DualSIM
 void supportDualSIM(PhonesList list) {
 	int n = 0;
-
-	cout << endl << "Телефоните, които поддържат Dual SIM" << endl;
-	cout << setfill(' ') << setw(4) << left << "No" << setw(20) << "| МАРКА |"
-		<< setw(18) << "| МОДЕЛ |"
-		<< setw(18) << "| ЦВЯТ |"
-		<< setw(18) << "| ЦЕНА |"
-		<< setw(18) << "| ПАМЕТ |"
-		<< setw(20) << "| ДИСПЕЛЙ |"
-		<< setw(14) << "| DUAL SIM |"
-		<< setw(15) << "| БРОЙ |"
-		<< endl;
-	for (int i = 0; i < list.size; i++) {
-		if (list.phones[i].dualSim == true) {
-			cout << setfill(' ') << left << setw(4) << /*?*/ n + 1 << "| "
-				<< setw(13) << list.phones[i].brand << "| "
-				<< setw(11) << list.phones[i].model << left << "| "
-				<< setw(12) << left << list.phones[i].color << "| "
-				<< setw(12) << list.phones[i].price << "| "
-				<< setw(3) << left << list.phones[i].storage << left << " GB" << setw(5) << "" << "| "
-				<< setw(11) << list.phones[i].screenSize << "| "
-				<< setw(14) << (list.phones[i].dualSim ? "Да" : "Не") << "| "
-				<< setw(12) << list.phones[i].countFromThisPhone
-				<< endl;
-			n++;
+	bool isHave = false;
+	for (int j = 0; j < list.size; j++) {
+		if (list.phones[j].dualSim == true) {
+			isHave = true;
 		}
 	}
-	cout << endl;
+	if (list.size > 0 && isHave) {
+		cout << endl << "Телефоните, които поддържат Dual SIM" << endl;
+		cout << setfill(' ') << setw(4) << left << "No" << setw(20) << "| МАРКА |"
+			<< setw(18) << "| МОДЕЛ |"
+			<< setw(18) << "| ЦВЯТ |"
+			<< setw(18) << "| ЦЕНА |"
+			<< setw(18) << "| ПАМЕТ |"
+			<< setw(20) << "| ДИСПЕЛЙ |"
+			<< setw(14) << "| DUAL SIM |"
+			<< setw(15) << "| БРОЙ |"
+			<< endl;
+		for (int i = 0; i < list.size; i++) {
+			if (list.phones[i].dualSim == true) {
+				cout << setfill(' ') << left << setw(4) << /*?*/ n + 1 << "| "
+					<< setw(13) << list.phones[i].brand << "| "
+					<< setw(11) << list.phones[i].model << left << "| "
+					<< setw(12) << left << list.phones[i].color << "| "
+					<< setw(12) << list.phones[i].price << "| "
+					<< setw(3) << left << list.phones[i].storage << left << " GB" << setw(5) << "" << "| "
+					<< setw(11) << list.phones[i].screenSize << "| "
+					<< setw(14) << (list.phones[i].dualSim ? "Да" : "Не") << "| "
+					<< setw(12) << list.phones[i].countFromThisPhone
+					<< endl;
+				n++;
+			}
+		}
+		cout << endl;
+	}
+	else {
+		if (!isHave && list.size > 0) {
+			cout << "Няма телефони, които поддържат две СИМ карти!" << endl;
+		}
+		else {
+			cout << "Няма налични телефони!" << endl;
+		}
+	}
 }
 
 
@@ -407,7 +389,6 @@ void phoneFromInput(PhonesList& list) {
 	if (list.size < 100) {
 		string brand, model, color = "";
 		double price = 0.0;
-		/*string priceStr = "";*/
 		double screenSize = 0.0;
 		int storage = 0;
 		bool dualSim = false;
@@ -427,19 +408,15 @@ void phoneFromInput(PhonesList& list) {
 			cin.clear();
 			cin.ignore(123, '\n');
 		}
-
-
-
-
 		cout << "Въведете вградената памет в (GB): ";
 		while (!(cin >> storage)) {
 			cout << "Въведете вградената памет в (GB): ";
 			cin.clear();
 			cin.ignore(123, '\n');
 		}
-		cout << "Въведете в размер на екрана в (screenSize): ";
+		cout << "Въведете в размер на екрана в (inch): ";
 		while (!(cin >> screenSize)) {
-			cout << "Въведете в размер на екрана в (screenSize): ";
+			cout << "Въведете в размер на екрана в (inch): ";
 			cin.clear();
 			cin.ignore(123, '\n');
 		}
@@ -474,9 +451,10 @@ void phoneFromInput(PhonesList& list) {
 		phone[list.size].dualSim = dualSim;
 		phone[list.size].countFromThisPhone = countFromThisPhone;
 		list.add(phone[list.size]);
+		cout << endl << "Успеншо беше добавен " << brand << " " << model << endl;
 	}
 	else {
-		cout << "Няма достатъчно място в склада!" << endl;
+		cout << endl << "Няма достатъчно място в склада!" << endl;
 	}
 }
 
@@ -501,16 +479,28 @@ void phonesFromInput(PhonesList& list) {
 			cout << "Въведете марка на телефона: ";
 			cin >> brand;
 			cout << "Въведете модел на телефона: ";
-			cin >> model;
+			cin.ignore(10, '\n');
+			getline(cin, model);
 			cout << "Въведете цвят на телефона: ";
 			cin >> color;
 			cout << "Въведете цена на телефона: ";
-			cin >> price;
+			while (!(cin >> price)) {
+				cout << "Въведете цена на телефона: ";
+				cin.clear();
+				cin.ignore(123, '\n');
+			}
 			cout << "Въведете вградената памет в (GB): ";
-			cin >> storage;
-			cout << "Въведете в размер на екрана в (screenSize): ";
-			cin >> screenSize;
-
+			while (!(cin >> storage)) {
+				cout << "Въведете вградената памет в (GB): ";
+				cin.clear();
+				cin.ignore(123, '\n');
+			}
+			cout << "Въведете в размер на екрана в (inch): ";
+			while (!(cin >> screenSize)) {
+				cout << "Въведете в размер на екрана в (inch): ";
+				cin.clear();
+				cin.ignore(123, '\n');
+			}
 			while (true) {
 				cout << "Въведете може ли да работи с две SIM карти (yes/no): ";
 				string dualSimStr;
@@ -525,7 +515,11 @@ void phonesFromInput(PhonesList& list) {
 				}
 			}
 			cout << "Въведете бройка от този телефон: ";
-			cin >> countFromThisPhone;
+			while (!(cin >> countFromThisPhone)) {
+				cout << "Въведете бройка от този телефон: ";
+				cin.clear();
+				cin.ignore(123, '\n');
+			}
 
 			phone[list.size].brand = brand;
 			phone[list.size].model = model;
@@ -546,8 +540,9 @@ void phonesFromInput(PhonesList& list) {
 
 
 // Сортиране на телефони по низходящ ред на цената
-void sortingMenu(PhonesList& list) {
+void sorting(PhonesList& list) {
 	Phone tmp;
+
 	for (int i = 0; i < list.size; i++) {
 		for (int j = i + 1; j < list.size; j++) {
 			if (list.phones[i].price > list.phones[j].price) {
@@ -668,7 +663,7 @@ void editPhone(PhonesList& list) {
 				list.phones[index].screenSize = screenSize;
 				list.phones[index].dualSim = dualSim;
 				list.phones[index].countFromThisPhone = countFromThisPhone;
-				cout << "Данните бяха записани в базата данни!" << endl;
+				cout << endl << "Данните бяха записани в базата данни!" << endl;
 				cout << endl;
 				break;
 			}
@@ -678,7 +673,7 @@ void editPhone(PhonesList& list) {
 		}
 		else {
 			if (isStock == false && i == list.size) {
-				cout << "Не съществува такъв телефон в базата данни!" << endl << endl;
+				cout << endl << "Не съществува такъв телефон в базата данни!" << endl << endl;
 				break;
 			}
 			else {
@@ -794,7 +789,7 @@ void fetchPhonesByBrand(PhonesList& list) {
 void fetchPhonesByScreenSize(PhonesList& list) {
 	Phone tmp;
 	PhonesList listOfPhones = list;
-	PhonesList copiedArray = {};
+	PhonesList copiedArray = {}; 
 
 	double screenSize = 0;
 	cout << "Въведи размер на екрана: ";
@@ -885,12 +880,17 @@ void sellPhone(PhonesList& list) {
 		}
 
 		if (searchBrand == listOfPhones.phones[i].brand && searchModel == listOfPhones.phones[i].model && list.phones[i].countFromThisPhone > 0) {
-			list.phones[i].countFromThisPhone--;
-			cout << "Беше продаден телефон: " << list.phones[i].brand << " " << list.phones[i].model << endl << endl;
+			if (list.phones[i].countFromThisPhone > 0) {
+				list.phones[i].countFromThisPhone--;
+				cout << endl << "Беше продаден телефон: " << list.phones[i].brand << " " << list.phones[i].model << endl << endl;
+			}
+			else {
+				cout << endl << "В момента не е наличен " << list.phones[i].brand << " " << list.phones[i].model << endl;
+			}
 		}
 		else {
 			if (isStock == false && i == list.size) {
-				cout << "Не съществува такъв телефон в базата данни!" << endl << endl;
+				cout << endl << "Не съществува такъв телефон в базата данни!" << endl << endl;
 				break;
 			}
 			else {
@@ -904,9 +904,7 @@ void sellPhone(PhonesList& list) {
 // Меню за управление на файлове
 void controllFilesMenu(Phone phones[100], PhonesList& list) {
 	int menuNumber = 0;
-
 	char chooice = 'x';
-
 
 	cout << "1) Извеждане на масива с мобилни телефони във файл (текстов)" << endl;
 	cout << "2) Въвеждане на масива с мобилни телефони от файл (текстов)" << endl;
@@ -1019,9 +1017,8 @@ void readFromTextFile(PhonesList& list) {
 
 // Записване на двоичен файл
 void saveBinaryFile(PhonesList& list) {
-	/*Phone tmp;*/
 	fstream file;
-	file.open("database.dat", ios::out | ios::binary);
+	file.open(binFile, ios::out | ios::binary);
 
 	if (file.fail()) {
 		cout << endl << "Няма файл!" << endl;
@@ -1036,7 +1033,7 @@ void saveBinaryFile(PhonesList& list) {
 // Зареждане от двоичен файл
 void loadBinaryFile(PhonesList& list) {
 	fstream file;
-	file.open("database.dat", ios::binary | ios::in);
+	file.open(binFile, ios::binary | ios::in);
 	Phone phone;
 	if (file.fail()) {
 		cout << endl << "Не съществува такъв файл!" << endl;
@@ -1046,12 +1043,12 @@ void loadBinaryFile(PhonesList& list) {
 	long pos = file.tellg() / (sizeof(Phone));
 	file.close();
 
-	file.open("database.dat", ios::binary | ios::in);
+	file.open(binFile, ios::binary | ios::in);
 	if (file.fail()) {
 		cout << endl << "Не съществува такъв файл!" << endl;
 		exit(1);
 	}
 	file.read((char*)list.phones, sizeof(Phone) * pos);
 	file.close();
-	cout << endl << "Файлът беше успешно зареден!" << endl;
+	cout << "Файлът беше успешно зареден!" << endl << endl;
 }
